@@ -1,0 +1,21 @@
+linters:
+  enable-all: true
+  disable:
+    - nlreturn
+    - tagliatelle
+    - maligned
+    - varnamelen
+    - exhaustivestruct
+    - varcheck
+    - scopelint
+    - deadcode
+    - nosnakecase
+    - structcheck
+    - interfacer
+    - golint
+    - ifshort
+
+    # Only for digital ocean
+    - gomodguard
+    - musttag
+    - gomoddirectives
