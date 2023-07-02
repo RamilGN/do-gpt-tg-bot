@@ -15,6 +15,7 @@ import (
 var errGpt = errors.New("gpt error")
 
 const (
+	gptOpenaiAPIEnv  = "OPENAI_API_TOKEN"
 	gptCompletionURL = "https://api.openai.com/v1/chat/completions"
 	gptModel         = "gpt-3.5-turbo"
 	gptRoleSystem    = "system"
@@ -28,7 +29,7 @@ type Gpt struct {
 }
 
 func NewGpt(client *http.Client) (*Gpt, error) {
-	token := os.Getenv("OPENAI_API_TOKEN")
+	token := os.Getenv(gptOpenaiAPIEnv)
 	if token == "" {
 		return nil, fmt.Errorf("%w. empty OPENAI_API_TOKEN", errGpt)
 	}
@@ -48,6 +49,8 @@ func NewGpt(client *http.Client) (*Gpt, error) {
 			CheckRedirect: nil,
 			Jar:           nil,
 		}
+	} else {
+		gpt.Client = client
 	}
 
 	return gpt, nil

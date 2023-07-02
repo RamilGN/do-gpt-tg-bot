@@ -17,9 +17,9 @@ import (
 var errTelegram = errors.New("telegram error")
 
 const (
-	tgAPIURL = "https://api.telegram.org"
-
-	tgClientTimeout = time.Second * 7
+	tgAPIURL         = "https://api.telegram.org"
+	tgTelegramBotEnv = "TELEGRAM_BOT_TOKEN"
+	tgClientTimeout  = time.Second * 7
 )
 
 type Tg struct {
@@ -29,7 +29,7 @@ type Tg struct {
 }
 
 func NewTg(client *http.Client) (*Tg, error) {
-	token := os.Getenv("TELEGRAM_BOT_TOKEN")
+	token := os.Getenv(tgTelegramBotEnv)
 	if token == "" {
 		return nil, fmt.Errorf("%w. empty TELEGRAM_BOT_TOKEN", errTelegram)
 	}
@@ -44,6 +44,8 @@ func NewTg(client *http.Client) (*Tg, error) {
 			CheckRedirect: nil,
 			Jar:           nil,
 		}
+	} else {
+		tg.Client = client
 	}
 
 	return tg, nil
@@ -101,7 +103,7 @@ func ValidateTgUpdate(t *TgUpdate) error {
 		return fmt.Errorf("%w. nil update", errTelegram)
 	}
 
-	match := regexp.MustCompile("/ask .*").MatchString(strings.TrimSpace(t.Message.Text))
+	match := regexp.MustCompile("^/ask .*").MatchString(strings.TrimSpace(t.Message.Text))
 	if !match {
 		return fmt.Errorf("%w. empty message", errTelegram)
 	}

@@ -8,7 +8,7 @@ lint:
 
 .PHONY: test
 test:
-	 @cd ./packages/core/bot && go test
+	 @cd ./packages/core/bot && go test -v
 
 .PHONY: prepare-to-deploy
 prepare-to-deploy: tg-set-commands tg-set-webhook
