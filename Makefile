@@ -4,7 +4,11 @@ deploy:
 
 .PHONY: lint
 lint:
-	@golangci-lint run ./packages/core/bot --out-format tab
+	@golangci-lint run ./packages/core/bot --out-format=tab
+
+.PHONY: test
+test:
+	 @cd ./packages/core/bot && go test
 
 .PHONY: prepare-to-deploy
 prepare-to-deploy: tg-set-commands tg-set-webhook
